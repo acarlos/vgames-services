@@ -45,6 +45,12 @@ public class JogoService {
 		}
 		cleanDTOs();
 		this.sherlockDTO.setJogo(Boolean.TRUE);
+		PerguntaDTO perguntaDTO = new PerguntaDTO();
+		RespostaDTO respostaDTO = new RespostaDTO();
+		respostaDTO.setSentenca("");
+		perguntaDTO.setPergunta("");
+		perguntaDTO.setResposta(respostaDTO);
+		this.sherlockDTO.setPerguntaDTO(perguntaDTO);
 		this.sherlockDTO.setSaudacao(this.messageSource.getMessage("regras", null, this.locale));
 		return this.sherlockDTO;
 	}
@@ -57,6 +63,9 @@ public class JogoService {
 	}
 	public SherlockDTO getPergunta(Integer indice) {
 		PerguntaDTO perguntaDTO = new PerguntaDTO();
+		RespostaDTO respostaDTO = new RespostaDTO();
+		respostaDTO.setSentenca("");
+		perguntaDTO.setResposta(respostaDTO);
 		if (!this.indices.contains(indice) && this.sherlockDTO.getJogo()) {
 			this.indices.add(indice);
 			this.pergunta = this.sherlockSCE.getPerguntasDoN1().get(new Random().nextInt(13));
