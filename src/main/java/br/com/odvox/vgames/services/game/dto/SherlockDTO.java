@@ -13,6 +13,8 @@ public class SherlockDTO implements Serializable{
 	private Integer indice;
 	
 	private String saudacao;
+	
+	private String saudacaoVoz;
 
 	public PerguntaDTO getPerguntaDTO() {
 		return perguntaDTO;
@@ -44,6 +46,14 @@ public class SherlockDTO implements Serializable{
 
 	public void setSaudacao(String saudacao) {
 		this.saudacao = saudacao;
+	}
+
+	public String getSaudacaoVoz() {
+		return saudacaoVoz;
+	}
+
+	public void setSaudacaoVoz(String saudacaoVoz) {
+		this.saudacaoVoz = saudacaoVoz;
 	}
 	
 }

@@ -10,6 +10,8 @@ public class PerguntaDTO  implements Serializable {
 	
 	private String pergunta;
 	
+	private String perguntaVoz;
+	
 	private Integer nivel;
 
 	public RespostaDTO getResposta() {
@@ -35,4 +37,13 @@ public class PerguntaDTO  implements Serializable {
 	public void setNivel(Integer nivel) {
 		this.nivel = nivel;
 	}
+
+	public String getPerguntaVoz() {
+		return perguntaVoz;
+	}
+
+	public void setPerguntaVoz(String perguntaVoz) {
+		this.perguntaVoz = perguntaVoz;
+	}
+	
 }

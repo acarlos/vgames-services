@@ -1,5 +1,6 @@
 package br.com.odvox.vgames.services.game.service;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -7,6 +8,7 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Service;
 
 import br.com.odvox.sherlock.SherlockSCE;
@@ -28,8 +30,12 @@ public class JogoService {
     private Integer erros;
     
     @Autowired
-    MessageSource messageSource;
-	private Locale locale = new Locale("pt", "BR");;
+    private MessageSource messageSource;
+    
+    @Autowired
+    private VoiceService voiceService;
+    
+	private Locale locale = new Locale("pt", "BR");
 
     public JogoService(JogoRepository jogoRepository){
 
@@ -52,6 +58,11 @@ public class JogoService {
 		perguntaDTO.setResposta(respostaDTO);
 		this.sherlockDTO.setPerguntaDTO(perguntaDTO);
 		this.sherlockDTO.setSaudacao(this.messageSource.getMessage("regras", null, this.locale));
+		try {
+			this.sherlockDTO.setSaudacaoVoz(this.voiceService.getVozURL(this.messageSource.getMessage("regras", null, this.locale)));
+		} catch (UnsupportedEncodingException | NoSuchMessageException e) {
+			e.printStackTrace();
+		}
 		return this.sherlockDTO;
 	}
 	
@@ -70,6 +81,11 @@ public class JogoService {
 			this.indices.add(indice);
 			this.pergunta = this.sherlockSCE.getPerguntasDoN1().get(new Random().nextInt(13));
 			perguntaDTO.setPergunta(this.pergunta.getPergunta());
+			try {
+				perguntaDTO.setPerguntaVoz(this.voiceService.getVozURL(this.pergunta.getPergunta()));
+			} catch (UnsupportedEncodingException | NoSuchMessageException e) {
+				e.printStackTrace();
+			}
 			perguntaDTO.setNivel(this.pergunta.getNivel());
 			this.sherlockDTO.setJogo(Boolean.TRUE);
 		} else {
