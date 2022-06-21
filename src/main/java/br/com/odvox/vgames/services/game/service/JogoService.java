@@ -102,11 +102,18 @@ public class JogoService {
 	
 	public SherlockDTO setResposta(String resposta) {
 		RespostaDTO respostaDTO = new RespostaDTO();
+		String sentenca = "";
 		if (this.sherlockSCE.responda(resposta, this.pergunta)) {
-			respostaDTO.setSentenca(this.messageSource.getMessage("primeiraMensagemRespostaCorreta", null, this.locale) + resposta);
+			sentenca = this.messageSource.getMessage("primeiraMensagemRespostaCorreta", null, this.locale) + resposta;
 		} else {
 			this.erros++;
-			respostaDTO.setSentenca(this.messageSource.getMessage("primeiraMensagemRespostaErrada", null, this.locale) + this.pergunta.getResposta().getSentenca());
+			sentenca = this.messageSource.getMessage("primeiraMensagemRespostaErrada", null, this.locale) + this.pergunta.getResposta().getSentenca();
+		}
+		respostaDTO.setSentenca(sentenca);
+		try {
+			respostaDTO.setSentencaVoz(this.voiceService.getVozURL(sentenca));
+		} catch (UnsupportedEncodingException | NoSuchMessageException e) {
+			e.printStackTrace();
 		}
 		this.sherlockDTO.getPerguntaDTO().setResposta(respostaDTO);
 		return this.sherlockDTO;
