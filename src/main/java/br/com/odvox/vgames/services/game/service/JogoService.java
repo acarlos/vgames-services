@@ -60,8 +60,9 @@ public class JogoService {
 		this.sherlockDTO.setPerguntaDTO(perguntaDTO);
 		this.sherlockDTO.setSaudacao(this.messageSource.getMessage("regras", null, this.locale));
 		try {
-			this.sherlockDTO.setSaudacaoVoz(this.voiceService.getVozURL(this.messageSource.getMessage("regras", null, this.locale)));
-		} catch (UnsupportedEncodingException | NoSuchMessageException e) {
+			this.sherlockDTO.setSaudacaoVoz(this.voiceService.getVozFile("saudacao.mp3"));
+			//this.sherlockDTO.setSaudacaoVoz(this.voiceService.getVozURL(this.messageSource.getMessage("regras", null, this.locale)));
+		} catch (NoSuchMessageException e) {
 			e.printStackTrace();
 		}
 		return this.sherlockDTO;

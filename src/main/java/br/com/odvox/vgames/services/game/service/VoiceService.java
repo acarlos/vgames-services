@@ -1,8 +1,10 @@
 package br.com.odvox.vgames.services.game.service;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Files;
 import java.util.Base64;
 import java.util.Locale;
 import java.util.Random;
@@ -10,6 +12,7 @@ import java.util.Random;
 import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
@@ -79,6 +82,18 @@ public class VoiceService {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static String getVozFile(String path) {
+	    try {
+			File file = ResourceUtils.getFile("classpath:"+ path);
+	        byte[] fileContent = Files.readAllBytes(file.toPath());
+	        String vozBase64 = Base64.getEncoder().encodeToString(fileContent);
+			return "data:audio/mp3;base64," + vozBase64;
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    }
+	    return null;
 	}
 	
 	private InputStream synthesize(String text, OutputFormat format, Voice voice, AmazonPollyClient polly)
