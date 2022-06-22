@@ -92,7 +92,13 @@ public class JogoService {
 			perguntaDTO.setPergunta("Pergunta já foi realizada");
 		}
 		if (indice > 5 || this.erros == 3) {
-			perguntaDTO.setPergunta("Jogo encerrado, você errou " + this.erros);
+			String jogoEncerrado = "Jogo encerrado, você errou " + this.erros;
+			perguntaDTO.setPergunta(jogoEncerrado);
+			try {
+				perguntaDTO.setPerguntaVoz(this.voiceService.getVozURL(jogoEncerrado));
+			} catch (UnsupportedEncodingException | NoSuchMessageException e) {
+				e.printStackTrace();
+			}
 			this.sherlockDTO.setJogo(Boolean.FALSE); 
 		}
 		this.sherlockDTO.setPerguntaDTO(perguntaDTO);
