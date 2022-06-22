@@ -26,6 +26,7 @@ public class JogoService {
 	private SherlockSCE sherlockSCE = new SherlockSCE("pt", "BR");
     private SherlockDTO sherlockDTO;
     private Pergunta pergunta;
+    private List<Pergunta> perguntasFeitas = new ArrayList<Pergunta>();
     private List<Integer> indices = new ArrayList<Integer>();
     private Integer erros;
     
@@ -68,6 +69,7 @@ public class JogoService {
 	
 	
 	private void cleanDTOs() {
+		this.perguntasFeitas = new ArrayList<Pergunta>();
 		this.sherlockDTO = new SherlockDTO();
 		this.indices.clear();
 		this.erros = 0;
@@ -79,7 +81,8 @@ public class JogoService {
 		perguntaDTO.setResposta(respostaDTO);
 		if (!this.indices.contains(indice) && this.sherlockDTO.getJogo()) {
 			this.indices.add(indice);
-			this.pergunta = this.sherlockSCE.getPerguntasDoN1().get(new Random().nextInt(13));
+			this.pergunta = getPerguntaRandomUnico();
+			this.perguntasFeitas.add(this.pergunta);
 			perguntaDTO.setPergunta(this.pergunta.getPergunta());
 			try {
 				perguntaDTO.setPerguntaVoz(this.voiceService.getVozURL(this.pergunta.getPergunta()));
@@ -104,6 +107,17 @@ public class JogoService {
 		this.sherlockDTO.setPerguntaDTO(perguntaDTO);
 		this.sherlockDTO.setIndice(indice);
 		return this.sherlockDTO;
+	}
+	private Pergunta getPerguntaRandomUnico() {
+		Pergunta pergunta = this.getPerguntaRandom();
+		if (!this.perguntasFeitas.contains(pergunta)) {
+			return pergunta;
+		} else {
+			return this.getPerguntaRandomUnico();
+		}
+	}
+	private Pergunta getPerguntaRandom() {
+		return this.sherlockSCE.getPerguntasDoN1().get(new Random().nextInt(13));
 	}
 	
 	public SherlockDTO setResposta(String resposta) {
